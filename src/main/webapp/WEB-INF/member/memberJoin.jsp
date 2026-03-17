@@ -18,6 +18,9 @@
   <script>
     'use strict';
     
+    let idCheckSw = 0;
+    let nickCheckSw = 0;
+    
     // 정규식을 사용하세요....
     // 아이디는 4~20자의 영문 대/소문자와 숫자/밑줄 사용가능
     // 비밀번호는 2~15자...
@@ -88,7 +91,6 @@
       }
     	
     	// 필수입력 아닌 사항들의 체크
-			
     	if(tel2 != "" && !regTel.test(tel2)) {
     		alert("전화번호(국번호)를 확인하세요.");
         document.getElementById("tel2").focus();
@@ -114,11 +116,22 @@
     	//alert("회원가입완료!!");
     	
     	// 앞에서 모든 자료를 정상적으로 유효성 검사를 마친후 빠진 필드의 내용을 채워서 서버로 전송처리한다.
-    	document.myform.tel.value = tel;
-    	document.myform.address.value = address;
-    	document.myform.email.value = email;
-    	
-    	document.myform.submit();
+			// 아이디/닉네임 중복버튼 눌렀는지 체크
+    	if(idCheckSw == 0) {
+    		alert("아이디 중복체크버튼을 눌러주세요");
+    		document.getElementById("midBtn").focus();
+    	}
+    	else if(nickCheckSw == 0) {
+    		alert("닉네임 중복체크버튼을 눌러주세요");
+    		document.getElementById("nickNameBtn").focus();
+    	}
+    	else {
+	    	document.myform.tel.value = tel;
+	    	document.myform.address.value = address;
+	    	document.myform.email.value = email;
+	    	
+	    	document.myform.submit();
+	    }
     }
     
     // 아이디 중복체크
@@ -129,22 +142,25 @@
     		mid.focus();
     		return false;
     	}
+    	else {
+    		idCheckSw = 1;
     	
-    	$.ajax({
-    		url  : 'IdSearch.mem',
-    		type : 'get',
-    		data : {mid : mid.value},
-    		success: (res) => {
-    			if(res != "0") {
-    				alert("아이디가 중복되었습니다. 다른아이디로 다시 검색해 주세요.");
-    				mid.focus();
-    			}
-    			else {
-    				alert("사용 가능한 아이디 입니다.");
-    			}
-    		},
-    		error: () => alert("전송오류")
-    	});
+	    	$.ajax({
+	    		url  : 'IdSearch.mem',
+	    		type : 'get',
+	    		data : {mid : mid.value},
+	    		success: (res) => {
+	    			if(res != "0") {
+	    				alert("아이디가 중복되었습니다. 다른아이디로 다시 검색해 주세요.");
+	    				mid.focus();
+	    			}
+	    			else {
+	    				alert("사용 가능한 아이디 입니다.");
+	    			}
+	    		},
+	    		error: () => alert("전송오류")
+	    	});
+    	}
     }
     
     // 닉네임 중복체크
@@ -155,22 +171,25 @@
     		nickName.focus();
     		return false;
     	}
+    	else {
+    		nickCheckSw = 1;
     	
-    	$.ajax({
-    		url  : 'NickNameSearch.mem',
-    		type : 'get',
-    		data : {nickName : nickName.value},
-    		success: (res) => {
-    			if(res != "0") {
-    				alert("닉네임이 중복되었습니다. 다른닉네임으로 다시 검색해 주세요.");
-    				nickName.focus();
-    			}
-    			else {
-    				alert("사용 가능한 닉네임 입니다.");
-    			}
-    		},
-    		error: () => alert("전송오류")
-    	});
+	    	$.ajax({
+	    		url  : 'NickNameSearch.mem',
+	    		type : 'get',
+	    		data : {nickName : nickName.value},
+	    		success: (res) => {
+	    			if(res != "0") {
+	    				alert("닉네임이 중복되었습니다. 다른닉네임으로 다시 검색해 주세요.");
+	    				nickName.focus();
+	    			}
+	    			else {
+	    				alert("사용 가능한 닉네임 입니다.");
+	    			}
+	    		},
+	    		error: () => alert("전송오류")
+	    	});
+	    }
     }
   </script>
 </head>

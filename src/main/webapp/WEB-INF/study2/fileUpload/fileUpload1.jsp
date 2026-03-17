@@ -25,11 +25,22 @@
     	if(fileSize > maxSize) {
     		alert("업로드할 파일의 최대용량은 10MByte 입니다.");
     	}
-    	else if(ext != 'jpg' && ext != 'gif' && ext != 'png' && ext != 'zip' && ext != 'hwp' && ext != 'ppt' && ext != 'xls' && ext != 'pdf' && ext != 'txt') {
+    	else if(ext != 'jpg' && ext != 'gif' && ext != 'png' && ext != 'zip' && ext != 'hwp' && ext != 'ppt' && ext != 'pptx' && ext != 'xls' && ext != 'xlsx' && ext != 'doc' && ext != 'pdf' && ext != 'txt') {
     		alert("업로드 가능파일은 'jpg/gif/png/zip/hwp/ppt/xls/pdf/txt'입니다.");
     	}
     	else {
     		document.myform.submit();
+    	}
+    }
+    
+    // 선택된 그림파일 미리보기
+    function imgCheck(e) {
+    	if(e.files && e.files[0]) {
+    		let reader = new FileReader();
+    		reader.onload = function(e) {
+    			document.getElementById("demoImg").src = e.target.result;
+    		}
+    		reader.readAsDataURL(e.files[0]);
     	}
     }
   </script>
@@ -46,12 +57,13 @@
   <hr/>
   <form name="myform" method="post" action="FileUpload1Ok.st" enctype="multipart/form-data">
     <div class="input-group">
-	    <input type="file" name="fName" id="file" class="form-control" />
+	    <input type="file" name="fName" id="file" onchange="imgCheck(this)" class="form-control" />
 	    <input type="button" value="파일업로드" onclick="fCheck()" class="btn btn-success"/>
     </div>
   </form>
   <hr/>
-  <div>
+  <img id="demoImg" width="200px" />
+  <div class="mt-3">
     <a href="FileUploadForm.st" class="btn btn-warning">돌아가기</a>
     <a href="FileDownLoad.st" class="btn btn-primary">다운로드폼으로 이동하기</a>
   </div>

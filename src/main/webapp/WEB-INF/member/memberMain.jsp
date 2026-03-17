@@ -21,6 +21,7 @@
   <hr/>
   현재 총포인트 : <font color="orange"><b>${point}</b></font>점<br/>
   최근 방문일 : ${sLastDate}<br/>
+  오늘 방문횟수 : ${todayCnt} 건<br/>
   <hr/>
   <div>
     방명록에 쓴글 : ${guestCnt} 건<br/>

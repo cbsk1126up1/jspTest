@@ -353,4 +353,34 @@ public class MemberDAO {
 		}
 		return res;
 	}
+
+  // 방명록에 글쓴 횟수 처리
+  // 자동 등업(방명록에 5회 이상 글을 올렸을시 '준회원'에서 '정회원'으로 자동 등업처리(단, 방명록의 글은 하루에 여러번 등록해도 1회로 처리)
+	public int getGuestCnt(String mid, String name, String nickName, int level) {
+		int res = 0;
+		try {
+			if(level == 1) {
+				sql = "update member set level=2 where mid=? and "
+						+ "(select count(distinct date(visitDate)) from guest where name in (?, ?, ?)) >= 5";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, mid);
+				pstmt.setString(2, mid);
+				pstmt.setString(3, name);
+				pstmt.setString(4, nickName);
+				pstmt.executeUpdate();
+			}
+			sql = "select count(*) as cnt from guest where name in (?, ?, ?)";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mid);
+			pstmt.setString(2, name);
+			pstmt.setString(3, nickName);
+			rs = pstmt.executeQuery();
+			if(rs.next()) res = rs.getInt("cnt");
+		} catch (SQLException e) {
+			System.out.println("SQL문 오류(getGuestCnt) : " + e.getMessage());
+		} finally {
+			pstmtClose();
+		}
+		return res;
+	}
 }

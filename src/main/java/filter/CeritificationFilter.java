@@ -29,7 +29,7 @@ public class CeritificationFilter implements Filter {
 		
 		if(!uri.contains("/") && !uri.contains("/Main") && !uri.contains("/guest/") && !uri.contains("/login/")) {
 			System.out.println("인증창 통과중....");
-			if(!uri.contains("/css/") && !uri.contains("/js/")) {
+			if(!uri.contains("/css/") && !uri.contains("/js/") && !uri.contains("/images/")) {
 				request.setCharacterEncoding("utf-8");
 				response.setContentType("text/html; charset=utf-8");
 			}
